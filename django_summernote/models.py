@@ -8,8 +8,6 @@ try:
 except ImportError:
     from django.utils.importlib import import_module
 
-from django_summernote.settings import summernote_config
-
 
 __all__ = ['AbstractAttachment', 'Attachment', ]
 
@@ -17,6 +15,7 @@ __all__ = ['AbstractAttachment', 'Attachment', ]
 def _get_attachment_storage():
     # module importer code comes from
     # https://github.com/django-debug-toolbar/django-debug-toolbar/
+    from django_summernote.settings import summernote_config
     if summernote_config['attachment_storage_class']:
         storage_path = summernote_config['attachment_storage_class']
         try:
@@ -48,6 +47,8 @@ def _get_attachment_storage():
 
 
 class AbstractAttachment(models.Model):
+    from django_summernote.settings import summernote_config
+    
     name = models.CharField(max_length=255, null=True, blank=True, help_text="Defaults to filename, if left blank")
     file = models.FileField(
         upload_to=summernote_config['attachment_upload_to'],
